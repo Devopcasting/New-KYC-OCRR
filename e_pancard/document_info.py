@@ -41,11 +41,11 @@ class EPancardDocumentInfo:
     
     """func: extract PAN Card number"""
     def extract_pancard_number(self) -> dict:
-        try:
-            result = {
-                "E-Pancard Number": "",
-                "coordinates": []
+        result = {
+            "E-Pancard Number": "",
+            "coordinates": []
             }
+        try:
             pancard_text = ""
             pancard_coordinates = []
         
@@ -65,20 +65,17 @@ class EPancardDocumentInfo:
             }
             return result
         except Exception as error:
-            result = {
-                "E-Pancard Number": "",
-                "coordinates": []
-            }
+            self.logger.error(f"Error: E-Pancard Number | {error}")
             return result
 
     
     """func: extract dob"""
     def extract_dob(self):
-        try:
-            result = {
-                "E-Pancard DOB": "",
-                "coordinates": []
+        result = {
+            "E-Pancard DOB": "",
+            "coordinates": []
             }
+        try:
             dob_text = ""
             dob_coordinates = []
 
@@ -102,20 +99,17 @@ class EPancardDocumentInfo:
             }
             return result
         except Exception as error:
-            result = {
-                "E-Pancard DOB": "",
-                "coordinates": []
-            }
+            self.logger.error(f"Error: E-Pancard DOB | {error}")
             return result
 
         
     """func: extract gender"""
     def extract_gender(self):
-        try:
-            result = {
-                "E-Pancard Gender": "",
-                "coordinates": []
+        result = {
+            "E-Pancard Gender": "",
+            "coordinates": []
             }
+        try:
             gender_text = ""
             gender_coordinates = []
 
@@ -134,20 +128,17 @@ class EPancardDocumentInfo:
             }
             return result
         except Exception as error:
-            result = {
-                "E-Pancard Gender": "",
-                "coordinates": []
-            }
+            self.logger.error(f"Error: E-Pancard Gender | {error}")
             return result
 
     
     """func: extract name"""
     def extract_name(self):
-        try:
-            result = {
-                "E-Pancard Name": "",
-                "coordinates": []
+        result = {
+            "E-Pancard Name": "",
+            "coordinates": []
             }
+        try:
             name_text = ""
             name_coordinates = []
             matching_name_list = []
@@ -184,19 +175,16 @@ class EPancardDocumentInfo:
                 }
             return result
         except Exception as error:
-            result = {
-                "E-Pancard Name": "",
-                "coordinates": []
-            }
+            self.logger.error(f"Error: E-Pancard Name | {error}")
             return result
 
     """func: extract father name"""
     def extract_father_name(self):
-        try:
-            result = {
-                "E-Pancard Father's Name": "",
-                "coordinates": []
+        result = {
+            "E-Pancard Father's Name": "",
+            "coordinates": []
             }
+        try:
             father_name_text = ""
             father_name_coordinates = []
             matching_name_list = []
@@ -233,10 +221,7 @@ class EPancardDocumentInfo:
                 }
             return result
         except Exception as error:
-            result = {
-                "E-Pancard Father's Name": "",
-                "coordinates": []
-            }
+            self.logger.error(f"Error: E-Pancard Father's Name | {error}")
             return result
 
     """func: redact bottom pancard"""
@@ -262,32 +247,35 @@ class EPancardDocumentInfo:
 
     """func: extract QR code"""
     def extract_qr_code(self):
-        result = {}
-        qrcode_coordinates = []
+        result = {
+            "E-Pancard QR Code": "",
+            "coordinates": []
+            }
+        try:
+            qrcode_coordinates = []
+            # Load the image
+            image = cv2.imread(self.document_path)
 
-        # Load the image
-        image = cv2.imread(self.document_path)
+            # Detect and decode QR codes
+            found_qrs = self.qreader.detect(image)
 
-        # Detect and decode QR codes
-        found_qrs = self.qreader.detect(image)
-
-        if not found_qrs:
+            if not found_qrs:
+                return result
+        
+            """get 50% of QR Code"""
+            for i in found_qrs:
+                x1, y1, x2, y2 = i['bbox_xyxy']
+                qrcode_coordinates.append([int(round(x1)), int(round(y1)), int(round(x2)), (int(round(y1)) + int(round(y2))) // 2])
+                #qrcode_coordinates.append([int(round(x1)), int(round(y1)), int(round(x2)), int(round(y2))])
+        
             result = {
-                "Pancard QR Code": "",
-                "coordinates": []
+                "E-Pancard QR Code": f"Found {len(qrcode_coordinates)} QR Codes",
+                "coordinates": qrcode_coordinates
             }
             return result
-        """get 50% of QR Code"""
-        for i in found_qrs:
-            x1, y1, x2, y2 = i['bbox_xyxy']
-            qrcode_coordinates.append([int(round(x1)), int(round(y1)), int(round(x2)), (int(round(y1)) + int(round(y2))) // 2])
-            #qrcode_coordinates.append([int(round(x1)), int(round(y1)), int(round(x2)), int(round(y2))])
-        
-        result = {
-            "QR-Code": f"Found {len(qrcode_coordinates)} QR Codes",
-            "coordinates": qrcode_coordinates
-        }
-        return result
+        except Exception as error:
+            self.logger.error(f"Error: E-Pancard QR Code | {error}")
+            return result
     
 
 
