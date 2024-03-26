@@ -28,11 +28,11 @@ class DrivingLicenseDocumentInfo:
 
     """func: extract driving license number"""
     def extract_dl_number(self):
-        try:
-            result = {
-                "Driving License Number": "",
-                "coordinates": []    
+        result = {
+            "Driving License Number": "",
+            "coordinates": []    
             }
+        try:
             dl_number = ""
             dl_number_coordinated = []
 
@@ -51,19 +51,16 @@ class DrivingLicenseDocumentInfo:
             }
             return result
         except Exception as error:
-            result = {
-                "Driving License Number": "",
-                "coordinates": []    
-            }
+            self.logger.error(f"Error: Driving License Number | {error}")
             return result
             
     """func: extract dates"""
     def extract_dates(self):
-        try:
-            result = {
-                "Driving License Dates": "",
-                "coordinates": []
+        result = {
+            "Driving License Dates": "",
+            "coordinates": []
             }
+        try:
             date_text = ""
             date_coords = []
             date_coordinates = []
@@ -92,20 +89,17 @@ class DrivingLicenseDocumentInfo:
             }
             return result
         except Exception as error:
-            result = {
-                "Driving License Dates": "",
-                "coordinates": []
-            }
+            self.logger.error(f"Error: Driving License Dates | {error}")
             return result
 
     
     """func: extract pincode"""
     def extract_pincode(self):
-        try:
-            result = {
-                "Driving License Pincode": "",
-                "coordinates": []
+        result = {
+            "Driving License Pincode": "",
+            "coordinates": []
             }
+        try:
             pincode_number = ""
             pincode_coordinates = []
             pincode_coords = []
@@ -129,20 +123,17 @@ class DrivingLicenseDocumentInfo:
             }
             return result
         except Exception as error:
-            result = {
-                "Driving License Pincode": "",
-                "coordinates": []
-            }
+            self.logger.error(f"Error: Driving License Pincode | {error}")
             return result
 
     
     """func: extract state"""
     def extract_state(self):
-        try:
-            result = {
-                "Driving License Place": "",
-                "coordinates": []
+        result = {
+            "Driving License Place": "",
+            "coordinates": []
             }
+        try:
             state_name = ""
             state_coordinates = []
 
@@ -162,20 +153,17 @@ class DrivingLicenseDocumentInfo:
             }
             return result
         except Exception as error:
-            result = {
-                "Driving License Place": "",
-                "coordinates": []
-            }
+            self.logger.error(f"Error: Driving License Place | {error}")
             return result
 
     
     """func: extract name"""
     def extract_name(self):
-        try:
-            result = {
-                "Driving License Name": "",
-                "coordinates": []
+        result = {
+            "Driving License Name": "",
+            "coordinates": []
             }
+        try:
             name_text = ""
             name_coords = []
             matching_text = r"\b(?:name)\b"
@@ -211,10 +199,7 @@ class DrivingLicenseDocumentInfo:
         
             return result
         except Exception as error:
-            result = {
-                "Driving License Name": "",
-                "coordinates": []
-            }
+            self.logger.error(f"Error: Driving License Name | {error}")
             return result
 
     
