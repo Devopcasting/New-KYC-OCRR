@@ -22,7 +22,7 @@ class PassportDocumentInfo:
         """Get the text from document"""
         tesseract_config = r'--oem 3 --psm 11'
         self.text_data = pytesseract.image_to_string(document_path, lang="eng", config=tesseract_config)
-        print(self.coordinates)
+        
         """List of states"""
         self.states = indian_states_cities
         
@@ -132,7 +132,7 @@ class PassportDocumentInfo:
             }
         try:
             gender_text = ""
-            matching_text_keyword = ['M', 'F']
+            matching_text_keyword = ['M', 'F', 'MALE', 'FEMALE']
             gender_coordinates = []
 
             """get the coordinates"""
@@ -165,7 +165,7 @@ class PassportDocumentInfo:
             surname_coords = []
             surname_coordinates = []
             matching_line_index = None
-            matching_text_regex =  r"\b(?:surname|suname)\b"
+            matching_text_regex =  r"\b(?:surname|suname|ssurmame)\b"
 
             """find matching text index"""
             for i,(x1, y1, x2, y2, text) in enumerate(self.coordinates):
@@ -224,7 +224,7 @@ class PassportDocumentInfo:
             """get the coordinates"""
             for i in range(matching_line_index, len(self.coordinates)):
                 text = self.coordinates[i][4]
-                if text.lower() in ["fin", "wanfafa","dore","fier","sex"]:
+                if text.lower() in ["fin", "wanfafa","dore","fier","sex","pl","ie","i3ex"]:
                     break
                 if text.isupper():
                     given_name_cords.append([x1, y1, x2, y2])
