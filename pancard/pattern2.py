@@ -12,11 +12,11 @@ class PanCardPattern2:
 
     """func: extract username"""
     def extract_username_p2(self):
-        try:
-            result = {
-                f"{self.LABEL_NAME}": "",
-                "coordinates": []
+        result = {
+            f"{self.LABEL_NAME}": "",
+            "coordinates": []
             }
+        try:
             matching_text_coords = []
             next_line_list = ''
 
@@ -70,10 +70,7 @@ class PanCardPattern2:
 
             return result
         except Exception as error:
-            result = {
-                f"{self.LABEL_NAME}": "",
-                "coordinates": []
-            }
+            self.logger.error(f"Error: Pancard Name| {error}")
             return result
 
 
@@ -86,11 +83,11 @@ class PanCardPattern2:
 
     """func: extract father's name"""
     def extract_fathername_p2(self):
-        try:
-            result = {
-                f"{self.LABEL_NAME}": "",
-                "coordinates": []
+        result = {
+            f"{self.LABEL_NAME}": "",
+            "coordinates": []
             }
+        try:
             matching_text = None
             matching_text_list = None
             matching_index = None
@@ -150,10 +147,7 @@ class PanCardPattern2:
                 }
             return result
         except Exception as error:
-            result = {
-                f"{self.LABEL_NAME}": "",
-                "coordinates": []
-            }
+            self.logger.error(f"Error: Pancard Name | {error}")
             return result
         
     def __find_matching_text_index_father_name(self, lines, matching_text) -> int:

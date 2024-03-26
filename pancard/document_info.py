@@ -42,11 +42,11 @@ class PancardDocumentInfo:
     
     """func: extract pancard number"""
     def extract_pancard_number(self) -> dict:
+        result = {
+            "Pancard Number": "",
+            "coordinates": []
+            }
         try:
-            result = {
-                    "Pancard Number": "",
-                    "coordinates": []
-                }
             pancard_text = ""
             pancard_coordinates = []
             matching_text_index = None
@@ -93,19 +93,16 @@ class PancardDocumentInfo:
             }
             return result
         except Exception as error:
-            result = {
-                    "Pancard Number": "",
-                    "coordinates": []
-                }
+            self.logger.error(f"Error: Pancard Number | {error}")
             return result
 
     """func: extract dob"""
     def extract_dob(self):
-        try:
-            result = {
-                "Pancard DOB": "",
-                "coordinates": []
+        result = {
+            "Pancard DOB": "",
+            "coordinates": []
             }
+        try:
             dob_text = ""
             dob_coordinates = []
 
@@ -129,21 +126,18 @@ class PancardDocumentInfo:
             }
             return result
         except Exception as error:
-            result = {
-                "Pancard DOB": "",
-                "coordinates": []
-            }
+            self.logger.error(f"Error: Pancard DOB | {error}")
             return result
 
         
 
     """func: extract signature"""
     def extract_signature(self, pattern_no):
+        result = {
+            "Pancard Signature": "",
+            "coordinates": []
+            }
         try:
-            result = {
-                "Pancard Signature": "",
-                "coordinates": []
-                }
             matching_text_keyword = ["signature", "nature"]
             signature_coordinates = []
 
@@ -183,20 +177,17 @@ class PancardDocumentInfo:
                 }
                 return result
         except Exception as error:
-            result = {
-                    "Pancard Signature": "",
-                    "coordinates": []
-                    }
+            self.logger.error(f"Error: Pancard Signature | {error}")
             return result
 
 
     """func: extract QR code"""
     def extract_qr_code(self):
-        try:
-            result = {
-                "Pancard QR Code": "",
-                "coordinates": []
+        result = {
+            "Pancard QR Code": "",
+            "coordinates": []
             }
+        try:
             qrcode_coordinates = []
 
             # Load the image
@@ -220,10 +211,7 @@ class PancardDocumentInfo:
             }
             return result
         except Exception as error:
-            result = {
-                "Pancard QR Code": "",
-                "coordinates": []
-            }
+            self.logger.error(f"Error: Pancard QR-Code | {error}")
             return result
 
     """func: find matching text position"""
@@ -288,7 +276,7 @@ class PancardDocumentInfo:
             pattern_number = self.identify_pancard_pattern()
             if pattern_number == 1:
                 matching_text_keyword_username = ["name", "uiname"]
-                matching_text_keyword_fathername = ["father's name", "father", "/eather's"]
+                matching_text_keyword_fathername = ["father's name", "father", "/eather's", "FFATUBR'S"]
 
                 username_p1 = PanCardPattern1(self.coordinates, self.text_data, matching_text_keyword_username, 1).extract_username_fathername_p1()
                 fathername_p1 = PanCardPattern1(self.coordinates, self.text_data, matching_text_keyword_fathername, 2).extract_username_fathername_p1()
