@@ -24,11 +24,11 @@ class CDSLInfo:
 
     """func: extract PANCARD number"""
     def extract_pancard_number(self):
-        try:
-            result = {
-                "CDSL Pancard Number": "",
-                "coordinates": []
+        result = {
+            "CDSL Pancard Number": "",
+            "coordinates": []
             }
+        try:
             pancard_text = ""
             pancard_coordinates = []
 
@@ -44,26 +44,23 @@ class CDSLInfo:
         
             width = pancard_coordinates[2] - pancard_coordinates[0]
             result = {
-                "Pancard Number": pancard_text,
+                "CDSL Pancard Number": pancard_text,
                 "coordinates": [[pancard_coordinates[0], pancard_coordinates[1], 
                        pancard_coordinates[0] + int(0.65 * width),pancard_coordinates[3]]]
             }
             return result
         except Exception as error:
-            result = {
-                "CDSL Pancard Number": "",
-                "coordinates": []
-            }
+            self.logger.error(f"Error: CDSL Pancard Number | {error}")
             return result
 
 
     """func: extract NAME"""
     def extract_name(self):
-        try:
-            result = {
-                "CDSL Name": "",
-                "coordinates": []
+        result = {
+            "CDSL Name": "",
+            "coordinates": []
             }
+        try:
             name_text = ""
             matching_text_coords = []
             next_line = []
@@ -110,10 +107,7 @@ class CDSLInfo:
                 }
             return result
         except Exception as error:
-            result = {
-                "CDSL Name": "",
-                "coordinates": []
-            }
+            self.logger.error(f"Error: CDSL Name | {error}")
             return result
 
 
