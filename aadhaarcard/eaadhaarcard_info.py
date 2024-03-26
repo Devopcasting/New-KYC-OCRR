@@ -36,11 +36,11 @@ class EaadhaarCardInfo:
     
     """func: extract dob"""
     def extract_dob(self) -> dict:
-        try:
-            result = {
-                "Aadhaar DOB": "",
-                "coordinates": []
+        result = {
+            "Aadhaar DOB": "",
+            "coordinates": []
             }
+        try:
             dob_text = ""
             dob_coordinates = []
 
@@ -65,10 +65,6 @@ class EaadhaarCardInfo:
             }
             return result
         except Exception as error:
-            result = {
-                "Aadhaar DOB": "",
-                "coordinates": []
-            }
             return result
 
     """func: validate date"""
@@ -90,11 +86,11 @@ class EaadhaarCardInfo:
 
     """func: extract gender"""
     def extract_gender(self):
-        try:
-            result = {
-                "Aadhaar Gender": "",
-                "coordinates": []
+        result = {
+            "E-Aadhaar Gender": "",
+            "coordinates": []
             }
+        try:
             gender_text = ""
             gender_coordinates = []
 
@@ -117,24 +113,21 @@ class EaadhaarCardInfo:
                                            self.coordinates_default[i][2], self.coordinates_default[i][3]])
         
             result = {
-                "Aadhaar Gender": gender_text,
+                "E-Aadhaar Gender": gender_text,
                 "coordinates": [[gender_coordinates[-1][0], gender_coordinates[-1][1], gender_coordinates[0][2], gender_coordinates[0][3]]]
             }
             return result
         except Exception as error:
-            result = {
-                "Aadhaar Gender": "",
-                "coordinates": []
-            }
+            self.logger.error(f"Error: E-Aadhaar Gender | {error}")
             return result
 
     """func: extract aadhaar card number"""
     def extract_aadhaarcard_number(self):
+        result = {
+            "E-Aadhaar Number": "",
+            "coordinates": []
+            }
         try:
-            result = {
-                "Aadhaar Number": "",
-                "coordinates": []
-                }
             aadhaarcard_text = ""
             aadhaarcard_coordinates = []
             text_coordinates = []
@@ -161,24 +154,21 @@ class EaadhaarCardInfo:
                     if i in text:
                         aadhaarcard_coordinates.append([x1, y1, x2, y2])
             result = {
-                "Aadhaar Number": aadhaarcard_text,
+                "E-Aadhaar Number": aadhaarcard_text,
                 "coordinates": aadhaarcard_coordinates
             }
             return result
         except Exception as error:
-            result = {
-                "Aadhaar Number": "",
-                "coordinates": []
-                }
+            self.logger(f"Error: E-Aadhaar Number | {error}")
             return result
 
     """func: extract name in english"""
     def extract_name_in_english(self):
-        try:
-            result = {
-                "Aadhaar Name": "",
-                "coordinates": []
+        result = {
+            "E-Aadhaar Name": "",
+            "coordinates": []
             }
+        try:
             name_coordinates = []
 
             """get clean text list"""
@@ -203,25 +193,21 @@ class EaadhaarCardInfo:
                     name_coordinates.append([x1, y1, x2, y2])
         
             result = {
-                "Aadhaar Name": " ".join(clean_matching_text),
+                "E-Aadhaar Name": " ".join(clean_matching_text),
                 "coordinates": name_coordinates
             }
-        
             return result
         except Exception as error:
-            result = {
-                "Aadhaar Name": "",
-                "coordinates": []
-            }
+            self.logger(f"Error: E-Aadhaar Name | {error}")
             return result
 
     """func: extract name in regional language"""
     def extract_name_in_regional(self):
+        result = {
+            "E-Aadhaar Regional Name": "",
+            "coordinates": []
+            }
         try:
-            result = {
-                "Aadhaar Regional Name": "",
-                "coordinates": []
-                }
             name_coordinates = []
 
             """get clean text list"""
@@ -245,25 +231,21 @@ class EaadhaarCardInfo:
                     name_coordinates.append([x1, y1, x2, y2])
         
             result = {
-                "Aadhaar Regional Name": " ".join(matching_text),
+                "E-Aadhaar Regional Name": " ".join(matching_text),
                 "coordinates": name_coordinates
             }
-
             return result
         except Exception as error:
-            result = {
-                "Aadhaar Regional Name": "",
-                "coordinates": []
-                }
+            self.logger(f"Error: E-Aadhaar Regional Name | {error}")
             return result
 
     """func: extract mobile number"""
     def extract_mobile_number(self):
-        try:
-            result = {
-                "Aadhaar Mobile Number": "",
-                "coordinates": []
+        result = {
+            "E-Aadhaar Mobile Number": "",
+            "coordinates": []
             }
+        try:
             mobile_number = ""
             mobile_coordinates = []
 
@@ -279,25 +261,22 @@ class EaadhaarCardInfo:
             """get first 6 chars"""
             width = mobile_coordinates[2] - mobile_coordinates[0]
             result = {
-                "Aadhaar Mobile Number" : mobile_number,
+                "E-Aadhaar Mobile Number" : mobile_number,
                 "coordinates" : [[mobile_coordinates[0], mobile_coordinates[1], mobile_coordinates[0] + int(0.54 * width), mobile_coordinates[3]]]
             }
             return result
         except Exception as error:
-            result = {
-                "Aadhaar Mobile Number": "",
-                "coordinates": []
-            }
+            self.logger(f"Error: E-Aadhaar Mobile Number | {error}")
             return result
 
 
     """func: extract pin code"""
     def extract_pin_code(self):
-        try:
-            result = {
-                "Aadhaar Pincode": "",
-                "coordinates": []
+        result = {
+            "E-Aadhaar Pincode": "",
+            "coordinates": []
             }
+        try:
             pin_code = ""
             pin_code_coordinates = []
             get_coords_result = []
@@ -315,24 +294,21 @@ class EaadhaarCardInfo:
                 get_coords_result.append(coords_result)
 
             result = {
-                "Aadhaar Pincode": pin_code,
+                "E-Aadhaar Pincode": pin_code,
                 "coordinates": get_coords_result
             }
             return result
         except Exception as error:
-            result = {
-                "Aadhaar Pincode": "",
-                "coordinates": []
-            }
+            self.logger(f"Error: E-Aadhaar Pincode | {error}")
             return result
 
     """"func: extract state name"""
     def extract_state_name(self):
-        try:
-            result = {
-                "Aadhaar Place Name": "",
-                "coordinates": []
+        result = {
+            "E-Aadhaar Place Name": "",
+            "coordinates": []
             }
+        try:
             state_name = ""
             state_coordinates = []
 
@@ -348,27 +324,22 @@ class EaadhaarCardInfo:
                 return result
         
             result = {
-                "Aadhaar Place Name": state_name,
+                "E-Aadhaar Place Name": state_name,
                 "coordinates": state_coordinates
             }
-
             return result
         except Exception as error:
-            result = {
-                "Aadhaar Place Name": "",
-                "coordinates": []
-            }
+            self.logger(f"Error: E-Aadhaar Place Name | {error}")
             return result
 
     """func: extract QR code"""
     def extract_qr_code(self):
-        try:
-            result = {
-                "Aadhaar QR Code": "",
-                "coordinates": []
+        result = {
+            "E-Aadhaar QR Code": "",
+            "coordinates": []
             }
+        try:
             qrcode_coordinates = []
-
             # Load the image
             image = cv2.imread(self.document_path)
 
@@ -385,15 +356,12 @@ class EaadhaarCardInfo:
                 #qrcode_coordinates.append([int(round(x1)), int(round(y1)), int(round(x2)), int(round(y2))])
         
             result = {
-                "QR-Code": f"Found {len(qrcode_coordinates)} QR Codes",
+                "E-Aadhaar QR Code": f"Found {len(qrcode_coordinates)} QR Codes",
                 "coordinates": qrcode_coordinates
             }
             return result
         except Exception as error:
-            result = {
-                "Aadhaar QR Code": "",
-                "coordinates": []
-            }
+            self.logger(f"Error: E-Aadhaar QR Code | {error}")
             return result
 
 

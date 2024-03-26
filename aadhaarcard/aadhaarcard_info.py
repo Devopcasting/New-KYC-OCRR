@@ -37,11 +37,11 @@ class AaadhaarCardInfo:
 
     """func: extract DOB"""
     def extract_dob(self):
-        try:
-            result = {
-                "Aadhaar DOB": "",
-                "coordinates": []
+        result = {
+            "Aadhaar DOB": "",
+            "coordinates": []
             }
+        try:
             dob_text = ""
             dob_coordinates = []
         
@@ -66,21 +66,16 @@ class AaadhaarCardInfo:
             }
             return result
         except Exception as error:
-            result = {
-                "Aadhaar DOB": "",
-                "coordinates": []
-            }
+            self.logger.error(f"Error: Aadhaar DOB | {error}")
             return result
-
-    
 
     """func: extract Gender"""
     def extract_gender(self):
-        try:
-            result = {
-                "Aadhaar Gender": "",
-                "coordinates": []
+        result = {
+            "Aadhaar Gender": "",
+            "coordinates": []
             }
+        try:
             gender_text = ""
             gender_coordinates = []
 
@@ -99,20 +94,17 @@ class AaadhaarCardInfo:
             }
             return result
         except Exception as error:
-            result = {
-                "Aadhaar Gender": "",
-                "coordinates": []
-            }
+            self.logger.error(f"Error: Aadhaar Gender | {error}")
             return result
 
     
     """func: extact aadhaar card number"""
     def extract_aadhaar_number(self):
+        result = {
+            "Aadhaar Number": "",
+            "coordinates": []
+            }
         try:
-            result = {
-                "Aadhaar Number": "",
-                "coordinates": []
-                }
             aadhaarcard_text = ""
             aadhaarcard_coordinates = []
             text_coordinates = []
@@ -147,20 +139,17 @@ class AaadhaarCardInfo:
             }
             return result
         except Exception as error:
-            result = {
-                "Aadhaar Number": "",
-                "coordinates": []
-                }
+            self.logger.error(f"Error: Aadhaar Number | {error}")
             return result
 
     
     """func: extract name"""
     def extract_name(self):
+        result = {
+            "Aadhaar Name": "",
+            "coordinates": []
+            }
         try:
-            result = {
-                "Aadhaar Name": "",
-                "coordinates": []
-                }
             name_text = ""
             name_coordinates = []
 
@@ -204,19 +193,16 @@ class AaadhaarCardInfo:
             }
             return result
         except Exception as error:
-            result = {
-                "Aadhaar Name": "",
-                "coordinates": []
-                }
+            self.logger.error(f"Error: Aadhaar Name | {error}")
             return result
 
     """func: extract name in regional lang"""
     def extract_name_in_regional(self):
-        try:
-            result = {
-                "Aadhaar Name": "",
-                "coordinates": []
+        result = {
+            "Aadhaar Name": "",
+            "coordinates": []
             }
+        try:
             name_text = ""
             name_coordinates = []
 
@@ -256,19 +242,16 @@ class AaadhaarCardInfo:
                 }
             return result
         except Exception as error:
-            result = {
-                "Aadhaar Name": "",
-                "coordinates": []
-            }
+            self.logger.error(f"Error: Aadhaar Name | {error}")
             return result
 
     """"func: extract state name"""
     def extract_state_name(self):
-        try:
-            result = {
-                "Aadhaar Place Name": "",
-                "coordinates": []
+        result = {
+            "Aadhaar Place Name": "",
+            "coordinates": []
             }
+        try:
             state_name = ""
             state_coordinates = []
 
@@ -289,19 +272,16 @@ class AaadhaarCardInfo:
 
             return result
         except Exception as error:
-            result = {
-                "Aadhaar Place Name": "",
-                "coordinates": []
-            }
+            self.logger.error(f"Error: Aadhaar Place Name | {error}")
             return result
         
     """func: extract pin code"""
     def extract_pin_code(self):
-        try:
-            result = {
-                "Aadhaar Pincode": "",
-                "coordinates": []
+        result = {
+            "Aadhaar Pincode": "",
+            "coordinates": []
             }
+        try:
             pin_code = ""
             pin_code_coordinates = []
             get_coords_result = []
@@ -324,20 +304,17 @@ class AaadhaarCardInfo:
             }
             return result
         except Exception as error:
-            result = {
-                "Aadhaar Pincode": "",
-                "coordinates": []
-            }
+            self.logger.error(f"Error: Aadhaar Pincode | {error}")
             return result
 
     
     """func: extract QR code"""
     def extract_qr_code(self):
-        try:
-            result = {
-                "Aadhaar QR Code": "",
-                "coordinates": []
+        result = {
+            "Aadhaar QR Code": "",
+            "coordinates": []
             }
+        try:
             qrcode_coordinates = []
 
             # Load the image
@@ -356,15 +333,12 @@ class AaadhaarCardInfo:
                 #qrcode_coordinates.append([int(round(x1)), int(round(y1)), int(round(x2)), int(round(y2))])
         
             result = {
-                "QR-Code": f"Found {len(qrcode_coordinates)} QR Codes",
+                "Aadhaar QR-Code": f"Found {len(qrcode_coordinates)} QR Codes",
                 "coordinates": qrcode_coordinates
             }
             return result
         except Exception as error:
-            result = {
-                "Aadhaar QR Code": "",
-                "coordinates": []
-            }
+            self.logger.error(f"Error: Aadhaar QR-Code | {error}")
             return result
 
     """func: get first 3 chars"""
