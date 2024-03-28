@@ -24,6 +24,7 @@ class PanCardPattern1:
     
             """split the text into lines"""
             lines = [i for i in self.text.splitlines() if len(i) != 0]
+            print(lines)
             """find the matching text index"""
             matching_text_index = self.__find_matching_text_index_username(lines, self.matching_text_keyword)
             if matching_text_index == 404:
@@ -63,7 +64,6 @@ class PanCardPattern1:
                     "coordinates": [[matching_text_coords[0][0], matching_text_coords[0][1], matching_text_coords[0][2], matching_text_coords[0][3]]]
                 }
 
-            print(result)
             return result
         except Exception as error:
             self.logger.error(f"Error: Pancard Name | {error}")
@@ -78,7 +78,7 @@ class PanCardPattern1:
         return 404
     
     def __has_special_characters(self, name: str):
-        special_char_pattern = re.compile(r'[@_.#$%^&*()<>?/\|}{~:]')
+        special_char_pattern = re.compile(r'[@_#$%^&()<>?/\|}{~]')
         if special_char_pattern.search(name) is not None:
             return True
         else:

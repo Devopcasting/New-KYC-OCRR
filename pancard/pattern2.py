@@ -24,6 +24,8 @@ class PanCardPattern2:
 
             """split the text into lines"""
             lines = [i for i in self.text.splitlines() if len(i) != 0]
+            print("NEWEEEEE")
+            print(lines)
         
             """find the matching text index"""
             matching_text_index = self.__find_matching_text_index_username(lines, matching_text_keyword)
@@ -32,15 +34,18 @@ class PanCardPattern2:
                 return result
         
             """get the next line of matching index"""
-            pattern = r"\b(?:department|departnent|income|sires|account|card|tax|govt|are|an|ad|z|of india)\b(?=\s|\W|$)|[-=\d]+"
+            pattern = r"\b(?:department|departnent|income|sires|account|card|tax|govt|are|ed|ah|if|vin|an|ad|z|of india)\b(?=\s|\W|$)|[-=\d]+"
             for line in lines[matching_text_index:]:
                 match = re.search(pattern, line.lower(), flags=re.IGNORECASE)
                 if match:
                     continue
-                if line.isupper():
+                has_uppercase = lambda text: any(word.isupper() for word in text.split())
+                if has_uppercase(line):
                     next_line_list = line.split()
+                    print(next_line_list)
+                    next_line_list = [word for word in next_line_list if word.isupper()]
                     break
-        
+                    
             if not next_line_list:
                 return result
         
@@ -67,7 +72,6 @@ class PanCardPattern2:
                     f"{self.LABEL_NAME}": user_name,
                     "coordinates": [[matching_text_coords[0][0], matching_text_coords[0][1], matching_text_coords[0][2], matching_text_coords[0][3]]]
                 }
-
             return result
         except Exception as error:
             self.logger.error(f"Error: Pancard Name| {error}")
@@ -98,6 +102,7 @@ class PanCardPattern2:
 
             """reverse line list"""
             reverse_line = lines[::-1]
+            print(reverse_line)
 
             """Data patterns: DD/MM/YYY, DD-MM-YYY"""
             date_pattern = r'\d{2}/\d{2}/\d{4}|\d{2}-\d{2}-\d{4}'
