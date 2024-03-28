@@ -33,8 +33,9 @@ class CDSLInfo:
             pancard_coordinates = []
 
             """get the coordinates"""
+            contains_digit_and_alpha = lambda s: any(char.isdigit() for char in s) and any(char.isalpha() for char in s)
             for i,(x1, y1, x2, y2, text) in enumerate(self.coordinates_default):
-                if len(text) == 10 and text.isupper() and text.isalnum():
+                if len(text) == 10 and text.isupper() and contains_digit_and_alpha(text):
                     pancard_text = text
                     pancard_coordinates = [x1, y1, x2, y2]
                     break
@@ -75,25 +76,47 @@ class CDSLInfo:
                 if match:
                     next_line = lines[i + 1].split()
                     break
-        
+
             if not next_line:
                 return result
 
             for i in next_line:
                 if i.lower() in ['name', ':']:
-                    next_line.remove(i)
+                    next_line = [item for item in next_line if item.lower() not in ['name', ':']]
 
-            name_text = " ".join(next_line)
+            if not next_line:
+                """get the pancard number"""
+                pancard_text_index = None
+                contains_digit_and_alpha = lambda s: any(char.isdigit() for char in s) and any(char.isalpha() for char in s)
+                for i,(x1, y1, x2, y2, text) in enumerate(self.coordinates_default):
+                    if len(text) == 10 and text.isupper() and contains_digit_and_alpha(text):
+                        pancard_text_index = i
+                        break
+                
+                if pancard_text_index is None:
+                    return result
+    
+                """get the name coordinates"""
+                for i in range(pancard_text_index + 1,  len(self.coordinates_default)):
+                    text = self.coordinates_default[i][4]
+                    if text.lower() in ["ikyc"]:
+                        break
+                    if text.isupper() and text.isalpha():
+                        name_text += " "+ text
+                        matching_text_coords.append([self.coordinates_default[i][0], self.coordinates_default[i][1],
+                                                     self.coordinates_default[i][2], self.coordinates_default[i][3]])
+            else:
+                name_text = " ".join(next_line)
 
-            if len(next_line) > 1:
-                next_line = next_line[:-1]                
+                if len(next_line) > 1:
+                    next_line = next_line[:-1]                
 
-            """get the coordinates"""
-            for i,(x1, y1, x2, y2, text) in enumerate(self.coordinates_default):
-                if text in next_line:
-                    matching_text_coords.append([x1, y1, x2, y2])
-                if len(next_line) == len(matching_text_coords):
-                    break
+                """get the coordinates"""
+                for i,(x1, y1, x2, y2, text) in enumerate(self.coordinates_default):
+                    if text in next_line:
+                        matching_text_coords.append([x1, y1, x2, y2])
+                    if len(next_line) == len(matching_text_coords):
+                        break
         
             if len(matching_text_coords) > 1:
                 result = {
