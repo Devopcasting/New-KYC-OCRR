@@ -5,13 +5,13 @@ class IdentifyAadhaarCard:
         self.clean_text = clean_text
         
         # Regular expression pattern for Aadhaar card identifiers
-        self.aadhaarcard_regex = r"\b(?:enrollment|enrolment|enroliment|/enrolment|male|female|help@uidal.gov.in|government|government of india|www.uidal.gov.in|unique identification authority of india|aadhaar)\b"
+        self.aadhaarcard_regex = r"\b(?:enrollment|enrolment|UniqualidentificationsAuthority|enroliment|/enrolment|male|female|help@uidal.gov.in|government|government of india|www.uidal.gov.in|unique identification authority of india|aadhaar)\b"
        
         # Regular expression pattern for E-Aadhaar card identifiers
         self.eaadhaarcard_regex = r"\b(?:enrollment|enrolment|enroliment|/enrolment)\b"
 
         # Regular expression pattern for Aadhaar card identifiers
-        self.aadhaar_card_regex = r"\b(?:uidal.gov.in|male|female|government of india)\b"
+        self.aadhaar_card_regex = r"\b(?:uidal.gov.in|male|female|government of india|UniqualidentificationsAuthority)\b"
 
     def check_aadhaar_card_format(self) -> bool:
         for text in self.clean_text:

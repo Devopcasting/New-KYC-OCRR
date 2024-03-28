@@ -26,6 +26,8 @@ class EaadhaarCardInfo:
         self.coordinates_regional = TextCoordinates(document_path, lang_type="regional").generate_text_coordinates()
         self.coordinates = TextCoordinates(document_path).generate_text_coordinates()
         
+        print(self.coordinates)
+
         self.text_data_default = pytesseract.image_to_string(document_path)
         self.text_data_regional = pytesseract.image_to_string(document_path, lang="hin+eng")
 
@@ -54,8 +56,17 @@ class EaadhaarCardInfo:
                         dob_coordinates = [x1, y1, x2, y2]
                         dob_text += " "+text
                         break
+
             if not dob_coordinates:
-                return result
+                """check with other coordinate data"""
+                for i, (x1, y1, x2, y2, text) in enumerate(self.coordinates):
+                    match = re.search(date_pattern, text)
+                    if self.validate_date(text, '/'):
+                        dob_coordinates = [x1, y1, x2, y2]
+                        dob_text += " "+text
+                        break
+                if not dob_coordinates:
+                    return result
         
             """Get first 6 chars"""
             width = dob_coordinates[2] - dob_coordinates[0]
@@ -97,7 +108,7 @@ class EaadhaarCardInfo:
             """get the index number of Male/Female"""
             matching_index = 0
             for i ,(x1,y1,x2,y2,text) in enumerate(self.coordinates_default):
-                if text.lower() in ["male", "female"]:
+                if text.lower() in ["male", "female", "femalp"]:
                     matching_index = i
                     gender_text = text
                     break
@@ -135,7 +146,7 @@ class EaadhaarCardInfo:
             """get the index of male/female"""
             matching_index = 0
             for i,(x1,y1,x2,y2,text) in enumerate(self.coordinates):
-                if text.lower() in ["male", "female"]:
+                if text.lower() in ["male", "female", "femalp"]:
                     matching_index = i
             if matching_index == 0:
                 return result
@@ -170,30 +181,56 @@ class EaadhaarCardInfo:
             }
         try:
             name_coordinates = []
+            matching_text_index = None
 
             """get clean text list"""
             clean_text = [i for i in self.text_data_default.split("\n") if len(i) != 0]
 
             """get the above matching text"""
             matching_text = []
+            match_1_keywords = ["dob", "birth", "bith", "year", "binh"]
             for i,text in enumerate(clean_text):
-                if "dob" in text.lower() or "birth" in text.lower() or "bith" in text.lower() or "year" in text.lower() or "binh" in text.lower():
+                if any(keyword in text.lower() for keyword in match_1_keywords):
                     matching_text = clean_text[i - 1].split()
                     break
-            if not matching_text:
-                return result
-            
-            clean_matching_text = [i for i in matching_text if i.isalpha()]
 
-            if len(clean_matching_text) > 1:
-                clean_matching_text = clean_matching_text[:-1]
+            if not matching_text:
+                """
+                    Check if name is available after 'To'
+                """
+                match_2_keywords = ["ace", "ta", "ata arate tahar", "ata", "arate", "tahar", "to", "to,", "ta"]
+                for i, text in enumerate(clean_text):
+                    if any(keyword in text.lower() for keyword in match_2_keywords):
+                        matching_text_index = i
+                        break
+                if matching_text_index is None:
+                    return result
+                
+                for i in range(matching_text_index + 1, len(clean_text)):
+                    words = clean_text[i].split()
+                    all_lower = any(map(lambda word: word.islower(), words))
+                    if all_lower:
+                        continue
+                    check_first_chars_capital = lambda s: all(word[0].isupper() for word in re.findall(r'\b\w+', s))
+                    #check_first_chars_capital = lambda word_list: all(word[0].isupper() for word in word_list)
+                    #first_char_upper = all(map(lambda word: word[0].isupper(), words))
+                    if check_first_chars_capital:
+                        matching_text = clean_text[i].split()
+                        break
+                if not matching_text:
+                    return result
+                
+            #clean_matching_text = [i for i in matching_text if i.isalpha()]
+
+            if len(matching_text) > 1:
+                matching_text = matching_text[:-1]
         
             for i, (x1, y1, x2, y2, text) in enumerate(self.coordinates):
-                if text in clean_matching_text:
+                if text in matching_text:
                     name_coordinates.append([x1, y1, x2, y2])
         
             result = {
-                "E-Aadhaar Name": " ".join(clean_matching_text),
+                "E-Aadhaar Name": " ".join(matching_text),
                 "coordinates": name_coordinates
             }
             return result
@@ -285,7 +322,7 @@ class EaadhaarCardInfo:
             for i,(x1, y1, x2, y2, text) in enumerate(self.coordinates):
                 if len(text) == 6 and text.isdigit():
                     pin_code_coordinates.append([x1, y1, x2, y2])
-                    pin_code = text
+                    pin_code += " "+ text
             if not pin_code_coordinates:
                 return result
         
@@ -317,7 +354,7 @@ class EaadhaarCardInfo:
                 for state_pattern in self.states:
                     if re.search(state_pattern, text, re.IGNORECASE):
                         state_coordinates.append([x1, y1, x2, y2])
-                        state_name = text
+                        state_name += " "+ text
                         break
                     
             if not state_coordinates:

@@ -25,6 +25,8 @@ class AaadhaarCardInfo:
         self.coordinates_default = TextCoordinates(document_path, lang_type="default").generate_text_coordinates()
         self.coordinates_regional = TextCoordinates(document_path, lang_type="regional").generate_text_coordinates()
 
+        print(self.coordinates_default)
+        
         """Get String"""
         tesseract_config = r'--oem 3 --psm 11'
         self.text_data_default = pytesseract.image_to_string(document_path)
